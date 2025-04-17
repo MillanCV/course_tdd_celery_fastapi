@@ -9,17 +9,12 @@ RUN apt-get update \
   # psycopg2 dependencies
   && apt-get install -y libpq-dev \
   # Additional dependencies
-  && apt-get install -y telnet netcat \
+  && apt-get install -y telnet netcat curl unzip \
   # cleaning up unused files
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
 
-# Install uv
-RUN curl -fsSL https://bun.sh/install | bash
-ADD https://astral.sh/uv/install.sh /uv-installer.sh
 
-# Run the installer then remove it
-RUN sh /uv-installer.sh && rm /uv-installer.sh
 
 # Ensure the installed binary is on the `PATH`
 ENV PATH="/root/.local/bin/:$PATH"

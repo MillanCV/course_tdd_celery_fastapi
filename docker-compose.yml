@@ -4,7 +4,7 @@ services:
   web:
     build:
       context: .
-      dockerfile: ./compose/local/fastapi/dockerfile
+      dockerfile: ./compose/local/fastapi/Dockerfile
     image: fastapi_celery_example_web
     command: /start
     volumes:
@@ -29,7 +29,7 @@ services:
   redis:
     image: redis:7-alpine
 
-    celery_worker:
+  celery_worker:
     build:
       context: .
       dockerfile: ./compose/local/fastapi/Dockerfile

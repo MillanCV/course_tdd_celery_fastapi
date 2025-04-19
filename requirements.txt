@@ -10,3 +10,6 @@ sqlalchemy>=2.0.40
 watchfiles==0.21.0
 Jinja2>=3.1.5
 requests==2.31.0
+asgiref==3.7.2
+asyncio-redis==0.16.0
+broadcaster==0.2.0

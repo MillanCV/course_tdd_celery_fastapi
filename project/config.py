@@ -12,6 +12,8 @@ class BaseConfig(BaseSettings):
     CELERY_BROKER_URL: str = "redis://127.0.0.1:6379/0"
     CELERY_RESULT_BACKEND: str = "redis://127.0.0.1:6379/0"
 
+    WS_MESSAGE_QUEUE: str = os.environ.get("WS_MESSAGE_QUEUE", "redis://127.0.0.1:6379/0")
+    
     class Config:
         env_file = ".env"  # Specify the environment file to load variables from .env
 

@@ -1,13 +1,22 @@
+from contextlib import asynccontextmanager
+from broadcaster import Broadcast
 from fastapi import FastAPI
 
 from project.celery_utils import create_celery
+from project.config import settings
 from project.users.router import users_router
 from project.users import tasks
 
+broadcast = Broadcast(settings.WS_MESSAGE_QUEUE)
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await broadcast.connect()
+    yield
+    await broadcast.disconnect()
 
 def create_app() -> FastAPI:
-    print('hei')
-    app = FastAPI()
+    app = FastAPI(lifespan=lifespan)
 
     app.celery_app = create_celery()
     

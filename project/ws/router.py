@@ -2,4 +2,4 @@ from fastapi import APIRouter
 
 ws_router = APIRouter()
 
-from project.ws import views # noqa
+from project.ws import views  # noqa

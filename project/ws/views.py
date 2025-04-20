@@ -3,7 +3,7 @@ import json
 from fastapi import WebSocket
 
 from project.ws.router import ws_router
-from project import broadcast
+from project.app import broadcast
 from project.celery_utils import get_task_info
 
 
@@ -15,7 +15,9 @@ async def ws_task_status(websocket: WebSocket):
 
     async with broadcast.subscribe(channel=task_id) as subscriber:
         # just in case the task already finish
+        print("1")
         data = get_task_info(task_id)
+        print("2")
         await websocket.send_json(data)
 
         async for event in subscriber:
@@ -29,6 +31,6 @@ async def update_celery_task_status(task_id: str):
     await broadcast.connect()
     await broadcast.publish(
         channel=task_id,
-        message=json.dumps(get_task_info(task_id))  # RedisProtocol.publish expect str
+        message=json.dumps(get_task_info(task_id)),  # RedisProtocol.publish expect str
     )
     await broadcast.disconnect()

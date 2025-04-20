@@ -41,17 +41,18 @@ def task_status(task_id: str):
     task = AsyncResult(task_id)
     state = task.state
 
-    if state == 'FAILURE':
+    if state == "FAILURE":
         error = str(task.result)
         response = {
-            'state': state,
-            'error': error,
+            "state": state,
+            "error": error,
         }
     else:
         response = {
-            'state': state,
+            "state": state,
         }
     return JSONResponse(response)
+
 
 @users_router.post("/webhook_test/")
 def webhook_test():
@@ -63,8 +64,14 @@ def webhook_test():
     requests.post("https://httpbin.org/delay/5")
     return "pong"
 
+
 @users_router.post("/webhook_test_async/")
 def webhook_test_async():
     task = task_process_notification.delay()
     print(task.id)
     return "pong"
+
+
+@users_router.get("/form_ws/")
+def form_ws_example(request: Request):
+    return templates.TemplateResponse("form_ws.html", {"request": request})

@@ -7,7 +7,9 @@ from project.config import settings
 from project.users.router import users_router
 from project.users import tasks
 
+
 broadcast = Broadcast(settings.WS_MESSAGE_QUEUE)
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -15,13 +17,18 @@ async def lifespan(app: FastAPI):
     yield
     await broadcast.disconnect()
 
+
 def create_app() -> FastAPI:
     app = FastAPI(lifespan=lifespan)
 
     app.celery_app = create_celery()
-    
+
     app.include_router(users_router)
-    
+
+    from project.ws.router import ws_router
+
+    app.include_router(ws_router)
+
     @app.get("/")
     async def root():
         return {"message": "Hello World"}
